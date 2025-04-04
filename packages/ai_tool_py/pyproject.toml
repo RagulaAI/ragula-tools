@@ -5,7 +5,34 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "ragula-ai-tool"
 version = "0.1.0"
-description = "Python port of the ai-tool package"
-readme = "README.md" # Optional, can be added later
+description = "Tool for integrating Ragula's knowledge base retrieval capabilities with AI models"
+readme = "README.md"
 requires-python = ">=3.8"
-# Add classifiers, authors, etc. as needed later
+license = {text = "MIT"}
+authors = [
+    {name = "Ragula Team"}
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "ragula-sdk>=0.1.0",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/ragula/ragula-tool"
+"Bug Tracker" = "https://github.com/ragula/ragula-tool/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["ragula*"]
+namespaces = true
+
+[tool.setuptools.package-data]
+"ragula.ai_tool" = ["py.typed"]
