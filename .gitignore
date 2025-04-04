@@ -132,3 +132,9 @@ dist
 # Build output
 dist/
 build/
+# Python environment
+__pycache__/
+*.pyc
+venv/
+.venv/
+*.egg-info/
