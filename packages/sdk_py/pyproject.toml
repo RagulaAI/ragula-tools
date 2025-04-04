@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ragula-sdk"
+version = "0.1.0"
+description = "Python SDK for the Ragula API" # Updated description slightly
+readme = "README.md" # Optional, can be added later
+requires-python = ">=3.8"
+# Add classifiers, authors, etc. as needed later
+
+dependencies = [
+    "requests>=2.20.0", # Added requests dependency
+]
+
+[project.urls] # Optional: Add project URLs if known
+"Homepage" = "https://github.com/KeymaAI/keyma/tree/main/packages/sdk_py"
+"Repository" = "https://github.com/KeymaAI/keyma.git"
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "mypy",
+    "ruff", # Example linter/formatter
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"ragula.sdk" = ["py.typed"]

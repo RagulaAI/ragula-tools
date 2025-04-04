@@ -1,0 +1,50 @@
+Metadata-Version: 2.4
+Name: ragula-langchain-tool
+Version: 0.1.0
+Summary: Python port of the langchain-tool package
+Author-email: Keyma AI <info@keyma.ai>
+License: MIT
+Project-URL: Homepage, https://github.com/KeymaAI/keyma
+Project-URL: Bug Tracker, https://github.com/KeymaAI/keyma/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Provides-Extra: dev
+Requires-Dist: pytest>=7.0.0; extra == "dev"
+Requires-Dist: pytest-cov>=4.0.0; extra == "dev"
+Requires-Dist: black>=23.0.0; extra == "dev"
+Requires-Dist: isort>=5.0.0; extra == "dev"
+Requires-Dist: mypy>=1.0.0; extra == "dev"
+
+# langchain_tool
+
+Python port of the langchain-tool package.
+
+## Installation
+
+```bash
+pip install langchain_tool
+```
+
+## Usage
+
+```python
+from langchain_tool import greet_langchain_tool
+
+# Print a greeting message
+print(greet_langchain_tool())  # Output: Hello from langchain_tool!
+```
+
+## Development
+
+This package is part of the Keyma monorepo. For development instructions, please refer to the main repository documentation.
+
+## License
+
+See the main repository for license information.

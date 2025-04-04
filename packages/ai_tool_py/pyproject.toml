@@ -1,0 +1,11 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ragula-ai-tool"
+version = "0.1.0"
+description = "Python port of the ai-tool package"
+readme = "README.md" # Optional, can be added later
+requires-python = ">=3.8"
+# Add classifiers, authors, etc. as needed later
