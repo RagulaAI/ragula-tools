@@ -8,14 +8,8 @@ This SDK provides a Python interface for interacting with the Ragula REST API. I
 
 This SDK requires Python 3.8+ and the `requests` library.
 
-Currently, the SDK is not published on PyPI. You can install it directly from the local directory:
-
 ```bash
-# Install from the directory
-pip install ./packages/sdk_py
-
-# Or, for development (editable install)
-pip install -e ./packages/sdk_py
+pip install ragula-sdk
 ```
 
 The necessary `requests` dependency will be installed automatically.
@@ -25,53 +19,20 @@ The necessary `requests` dependency will be installed automatically.
 Here's a simple example of how to initialize the client and list your collections:
 
 ```python
-import os
-from ragula.sdk import RagulaClient, RagulaError
+from ragula.sdk import RagulaClient
 
-# Helper function for cleaner error handling
-def try_catch(func):
-    try:
-        result = func()
-        return {"result": result, "error": None}
-    except Exception as e:
-        return {"result": None, "error": e}
-
-# Configuration
-RAGULA_API_URL = os.getenv("RAGULA_API_URL", "YOUR_RAGULA_API_BASE_URL")
-RAGULA_API_TOKEN = os.getenv("RAGULA_API_TOKEN")
-
-if not RAGULA_API_TOKEN:
-    raise ValueError("RAGULA_API_TOKEN environment variable not set.")
-
-# Initialize Client
-client = RagulaClient(base_url=RAGULA_API_URL, token=RAGULA_API_TOKEN)
+# Initialize Client with your API token
+RAGULA_API_TOKEN = "YOUR_API_TOKEN"
+client = RagulaClient(token=RAGULA_API_TOKEN)
 
 # Example: List Collections
-response = try_catch(lambda: client.collections.list_collections())
-
-if response["error"]:
-    print(f"Error: {response['error']}")
+collections = client.collections.list_collections()
+print("Available Collections:")
+if collections:
+    for collection in collections:
+        print(f"- ID: {collection.get('id')}, Name: {collection.get('name')}")
 else:
-    collections = response["result"]
-    print("Available Collections:")
-    if collections:
-        for collection in collections:
-            print(f"- ID: {collection.get('id')}, Name: {collection.get('name')}")
-    else:
-        print("No collections found.")
-```
-
-Replace `"YOUR_RAGULA_API_BASE_URL"` with the actual base URL of your Ragula API instance if you are not setting the `RAGULA_API_URL` environment variable.
-
-## Error Handling
-
-The SDK provides a `RagulaError` class for handling API-specific errors:
-
-```python
-try:
-    collection = client.collections.get_collection("non-existent-id")
-except RagulaError as e:
-    print(f"API Error: [{e.status_code}] {e.message}")
+    print("No collections found.")
 ```
 
 ## Available Services

@@ -9,7 +9,7 @@ class RagulaError(Exception):
         super().__init__(f"[{status_code}] {message}")
 
 class RagulaClient:
-    def __init__(self, base_url: str = "https://api.ragula.io", token: Optional[str] = None):
+    def __init__(self, base_url: str = "https://www.ragula.io", token: Optional[str] = None):
         """
         Initializes the Ragula API client.
 

@@ -6,14 +6,6 @@ This package provides a Node.js SDK for interacting with the Ragula API. It is g
 
 ## Installation
 
-Currently, this SDK is intended for local usage within the monorepo. You can install it from the root of the project:
-
-```bash
-npm install ./packages/sdk
-```
-
-Alternatively, if you intend to publish it to a registry like npm in the future, the installation would typically be:
-
 ```bash
 npm install @ragula/sdk
 ```
@@ -22,13 +14,10 @@ This SDK uses `axios` for making HTTP requests, which is included as a direct de
 
 ## Basic Usage
 
-First, configure the base URL for the Ragula API. Then, you can import and use the available services.
+Import and use the available services:
 
 ```typescript
-import { OpenAPI, CollectionsService } from '@ragula/sdk';
-
-// Configure the base URL of your Ragula API instance
-OpenAPI.BASE = 'http://localhost:8000'; // Replace with your actual API URL
+import { CollectionsService } from '@ragula/sdk';
 
 async function listMyCollections() {
   const { result, error } = await tryCatch(CollectionsService.getApiCollections());
@@ -42,39 +31,6 @@ async function listMyCollections() {
 }
 
 listMyCollections();
-```
-
-## Error Handling
-
-The SDK provides an `ApiError` class for handling API-specific errors. You can use the `tryCatch` helper function to simplify error handling:
-
-```typescript
-// Helper function for cleaner error handling
-async function tryCatch<T>(promise: Promise<T>): Promise<{ result?: T; error?: any }> {
-  try {
-    const result = await promise;
-    return { result };
-  } catch (error) {
-    return { error };
-  }
-}
-
-// Example usage
-async function createCollection() {
-  const { result, error } = await tryCatch(
-    CollectionsService.postApiCollections({
-      name: 'My Collection',
-      description: 'A collection of documents'
-    })
-  );
-  
-  if (error) {
-    console.error('Failed to create collection:', error);
-    return;
-  }
-  
-  console.log('Collection created:', result);
-}
 ```
 
 ## Available Services
