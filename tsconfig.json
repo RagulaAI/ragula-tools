@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
-    "target": "ES2016",
+    "target": "ES2020", // Updated target
+    "lib": ["ES2020", "DOM"], // Added lib for Object.entries and other features
     "module": "commonjs",
     "strict": true,
     "esModuleInterop": true,
