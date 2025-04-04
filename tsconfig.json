@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "ES2016",
+    "module": "commonjs",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "composite": true,
+    "declaration": true
+  },
+  "references": [
+    { "path": "./packages/ai-tool" },
+    { "path": "./packages/langchain-tool" },
+    { "path": "./packages/sdk" }
+  ],
+  "exclude": ["node_modules"]
+}
