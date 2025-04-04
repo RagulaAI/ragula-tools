@@ -1,3 +1,5 @@
+![Ragula Logo](https://6oday7lp8g.ufs.sh/f/I72vs5jlAS6TvD3nqAH4s7xKEMj19GiNQy0XmRfcvD6T4aVJ)
+
 # Ragula Python SDK
 
 This SDK provides a Python interface for interacting with the Ragula REST API. It simplifies making requests to manage collections, folders, files, and perform queries.

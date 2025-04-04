@@ -1,3 +1,5 @@
+![Ragula Logo](https://6oday7lp8g.ufs.sh/f/I72vs5jlAS6TvD3nqAH4s7xKEMj19GiNQy0XmRfcvD6T4aVJ)
+
 # Ragula Node.js SDK
 
 This package provides a Node.js SDK for interacting with the Ragula API. It is generated based on the API's OpenAPI specification.
