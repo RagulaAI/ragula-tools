@@ -2,10 +2,10 @@ Metadata-Version: 2.4
 Name: ragula-langchain-tool
 Version: 0.1.0
 Summary: Python port of the langchain-tool package
-Author-email: Keyma AI <info@keyma.ai>
+Author-email: Ragula <contact@ragula.io>
 License: MIT
-Project-URL: Homepage, https://github.com/KeymaAI/keyma
-Project-URL: Bug Tracker, https://github.com/KeymaAI/keyma/issues
+Project-URL: Homepage, https://github.com/RagulaAI/ragula-tools
+Project-URL: Bug Tracker, https://github.com/RagulaAI/ragula-tools/issues
 Classifier: Programming Language :: Python :: 3
 Classifier: Programming Language :: Python :: 3.8
 Classifier: Programming Language :: Python :: 3.9
@@ -43,7 +43,7 @@ print(greet_langchain_tool())  # Output: Hello from langchain_tool!
 
 ## Development
 
-This package is part of the Keyma monorepo. For development instructions, please refer to the main repository documentation.
+This package is part of the Ragula monorepo. For development instructions, please refer to the main repository documentation.
 
 ## License
 

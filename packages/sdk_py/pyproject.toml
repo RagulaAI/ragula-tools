@@ -15,8 +15,8 @@ dependencies = [
 ]
 
 [project.urls] # Optional: Add project URLs if known
-"Homepage" = "https://github.com/KeymaAI/keyma/tree/main/packages/sdk_py"
-"Repository" = "https://github.com/KeymaAI/keyma.git"
+"Homepage" = "https://github.com/RagulaAI/ragula-tools/tree/main/packages/sdk_py"
+"Repository" = "https://github.com/RagulaAI/ragula-tools.git"
 
 [project.optional-dependencies]
 dev = [

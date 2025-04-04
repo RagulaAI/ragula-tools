@@ -21,7 +21,7 @@ print(greet_langchain_tool())  # Output: Hello from langchain_tool!
 
 ## Development
 
-This package is part of the Keyma monorepo. For development instructions, please refer to the main repository documentation.
+This package is part of the Ragula monorepo. For development instructions, please refer to the main repository documentation.
 
 ## License
 

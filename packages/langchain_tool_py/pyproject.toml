@@ -10,7 +10,7 @@ readme = "README.md"
 requires-python = ">=3.8"
 license = {text = "MIT"}
 authors = [
-    {name = "Keyma AI", email = "info@keyma.ai"}
+    {name = "Ragula", email = "contact@ragula.io"}
 ]
 classifiers = [
     "Programming Language :: Python :: 3",
@@ -23,8 +23,8 @@ classifiers = [
 ]
 
 [project.urls]
-"Homepage" = "https://github.com/KeymaAI/keyma"
-"Bug Tracker" = "https://github.com/KeymaAI/keyma/issues"
+"Homepage" = "https://www.ragula.io"
+"Bug Tracker" = "https://github.com/RagulaAI/ragula-tools/issues"
 
 [tool.setuptools.packages.find]
 where = ["src"]
