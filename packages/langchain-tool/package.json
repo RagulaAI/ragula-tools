@@ -1,7 +1,21 @@
 {
   "name": "@ragula/langchain-tool",
   "version": "0.1.0",
-  "description": "",
+  "description": "A helper library to create Langchain tools using Zod schemas.",
+  "author": "Your Name <your.email@example.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/KeymaAI/ragula.git",
+    "directory": "packages/langchain-tool"
+  },
+  "keywords": [
+    "langchain",
+    "ai",
+    "tool",
+    "zod",
+    "typescript"
+  ],
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
@@ -10,8 +24,9 @@
   "scripts": {
     "build": "tsc"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "dependencies": {
+    "@langchain/core": "^0.3.43",
+    "zod": "^3.0.0"
+  },
   "type": "commonjs"
 }

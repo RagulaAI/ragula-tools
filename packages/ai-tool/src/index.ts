@@ -1,7 +1,6 @@
 import { tool } from "ai";
 import { z } from "zod";
-import Ragula from "@ragula/sdk";
-import { QueryResultItem } from "@ragula/sdk/dist/types";
+import Ragula, { QueryResultItem } from "@ragula/sdk";
 
 /**
  * Creates a tool that fetches relevant context from a Ragular knowledge base
