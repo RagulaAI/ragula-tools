@@ -1,0 +1,36 @@
+{
+  "name": "@ragula/mcp",
+  "version": "0.1.0",
+  "description": "MCP server implementation for Ragula",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "start": "node dist/index.js",
+    "build": "tsc",
+    "test": "jest"
+  },
+  "keywords": [
+    "ragula",
+    "mcp",
+    "server"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@ragula/sdk": "../sdk",
+    "@modelcontextprotocol/sdk": "^1.9.0",
+    "yargs": "^17.7.2",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.14",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.3.1",
+    "typescript": "^5.8.2",
+    "@types/yargs": "^17.0.32"
+  },
+  "type": "module"
+}

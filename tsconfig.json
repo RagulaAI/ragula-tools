@@ -12,7 +12,8 @@
   "references": [
     { "path": "./packages/ai-tool" },
     { "path": "./packages/langchain-tool" },
-    { "path": "./packages/sdk" }
+    { "path": "./packages/sdk" },
+    { "path": "./packages/mcp-ragula" }
   ],
   "exclude": ["node_modules"]
 }

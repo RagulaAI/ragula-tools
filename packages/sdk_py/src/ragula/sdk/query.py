@@ -1,4 +1,6 @@
-from typing import TYPE_CHECKING, List, Dict, Any, Optional
+from typing import TYPE_CHECKING, Optional
+# Import QueryResponse directly, QueryCollectionResponse is an alias in models.py
+from .models import QueryResponse, SimpleQueryPayload, QueryCollectionResponse
 
 if TYPE_CHECKING:
     from .client import RagulaClient
@@ -10,38 +12,36 @@ class QueryService:
     def __init__(self, client: 'RagulaClient'):
         self._client = client
 
-    def query_collection(
-        self,
-        collection_id: str,
-        query: str,
-        top_k: Optional[int] = None,
-        folder_ids: Optional[List[str]] = None,
-        file_types: Optional[List[str]] = None
-    ) -> Dict[str, Any]:
+    def query_collection(self, collection_id: str, query: str) -> QueryCollectionResponse:
         """
-        Performs a query against a specific collection.
+        Performs a semantic search query against a specific collection.
+        Note: This uses the simplified SDK payload { "query": query }.
 
         Args:
-            collection_id: The ID of the collection to query.
-            query: The query string.
-            top_k: The maximum number of results to return (optional).
-            folder_ids: A list of folder IDs to filter the search by (optional).
-            file_types: A list of file types (extensions) to filter the search by (optional).
+            collection_id (str): The ID of the collection to query.
+            query (str): The query string.
 
         Returns:
-            A dictionary containing the query results.
+            QueryResponse: An object containing the query results.
         """
-        payload: Dict[str, Any] = {"query": query}
-        if top_k is not None:
-            payload["topK"] = top_k
+        # Use the simplified payload as per the Node.js SDK definition
+        payload = SimpleQueryPayload(query=query)
+        json_payload = payload.model_dump(by_alias=True) # Ensures correct field names if aliases were used
+        return self._client._request("POST", f"/collections/{collection_id}/query", json_data=json_payload)
 
-        filter_data: Dict[str, List[str]] = {}
-        if folder_ids:
-            filter_data["folderIds"] = folder_ids
-        if file_types:
-            filter_data["fileTypes"] = file_types
+    def ask_question(self, collection_id: str, query: str) -> QueryCollectionResponse:
+        """
+        Asks a question to a specific collection (likely using RAG).
+        Note: This uses the simplified SDK payload { "query": query }.
 
-        if filter_data:
-            payload["filter"] = filter_data
+        Args:
+            collection_id (str): The ID of the collection to ask the question to.
+            query (str): The question string.
 
-        return self._client._request("POST", f"/collections/{collection_id}/query", json_data=payload)
+        Returns:
+            QueryResponse: An object containing the answer or related results.
+        """
+        # Uses the same simplified payload structure
+        payload = SimpleQueryPayload(query=query)
+        json_payload = payload.model_dump(by_alias=True)
+        return self._client._request("POST", f"/collections/{collection_id}/question", json_data=json_payload)

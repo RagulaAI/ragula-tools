@@ -72,6 +72,7 @@ The object returned by `ragula.collection(collectionId)` provides methods to int
 - `update(payload)`: Update collection properties (name, description)
 - `delete()`: Delete the collection
 - `query(query)`: Perform a search query against the collection
+- `question(query)`: Ask the collection a question
 
 #### Folder Operations
 - `listFolders()`: List all folders in the collection

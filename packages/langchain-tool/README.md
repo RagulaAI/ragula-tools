@@ -30,7 +30,6 @@ const adderTool = createLangchainTool({
   description: "Adds two numbers together",
   schema: adderSchema,
   func: async (input) => {
-    // Input is automatically validated and typed based on adderSchema
     const sum = input.a + input.b;
     return `The sum of ${input.a} and ${input.b} is ${sum}`;
   },
@@ -40,7 +39,7 @@ const adderTool = createLangchainTool({
 async function runExample() {
   try {
     const result = await adderTool.invoke({ a: 5, b: 3 });
-    console.log(result); // Output: The sum of 5 and 3 is 8
+    console.log(result);
   } catch (error) {
     console.error("Error invoking tool:", error);
   }

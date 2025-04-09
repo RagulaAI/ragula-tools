@@ -1,6 +1,8 @@
 
 import os
-from typing import TYPE_CHECKING, List, Dict, Any, Optional, IO, Tuple
+import os
+from typing import TYPE_CHECKING, List, Optional, IO, Tuple, Union
+from .models import File, ListFilesResponse, UploadFileResponse
 
 if TYPE_CHECKING:
     from .client import RagulaClient
@@ -12,17 +14,17 @@ class FilesService:
     def __init__(self, client: 'RagulaClient'):
         self._client = client
 
-    def list_files(self, collection_id: str, folder_id: Optional[str] = None) -> List[Dict[str, Any]]:
+    def list_files(self, collection_id: str, folder_id: Optional[str] = None) -> ListFilesResponse:
         """
         Lists files within a specific collection, optionally filtered by folder ID.
 
         Args:
-            collection_id: The ID of the collection containing the files.
-            folder_id: The ID of the folder to list files from.
-                       If None, lists files at the root level of the collection.
+            collection_id (str): The ID of the collection containing the files.
+            folder_id (Optional[str]): The ID of the folder to list files from.
+                                       If None, lists files at the root level.
 
         Returns:
-            A list of file objects.
+            List[File]: A list of file objects.
         """
         params = {}
         if folder_id:
@@ -36,21 +38,22 @@ class FilesService:
         file_content: Optional[Union[bytes, IO[bytes]]] = None,
         file_name: Optional[str] = None,
         folder_id: Optional[str] = None
-    ) -> Dict[str, Any]:
+    ) -> UploadFileResponse:
         """
         Uploads a file to a specific collection, optionally placing it in a folder.
         You must provide either file_path OR file_content (with file_name).
 
         Args:
-            collection_id: The ID of the collection to upload the file to.
-            file_path: The local path to the file to upload.
-            file_content: The content of the file as bytes or a file-like object.
-                          If using this, file_name must also be provided.
-            file_name: The name to give the uploaded file. Required if using file_content.
-            folder_id: The ID of the folder to place the uploaded file in (optional).
+            collection_id (str): The ID of the collection to upload the file to.
+            file_path (Optional[str]): The local path to the file to upload.
+            file_content (Optional[Union[bytes, IO[bytes]]]): The content of the file
+                                                              as bytes or a file-like object.
+                                                              If using this, file_name must also be provided.
+            file_name (Optional[str]): The name to give the uploaded file. Required if using file_content.
+            folder_id (Optional[str]): The ID of the folder to place the uploaded file in.
 
         Returns:
-            The file object representing the uploaded file.
+            File: The file object representing the uploaded file.
 
         Raises:
             ValueError: If required arguments are missing or conflicting.
@@ -88,8 +91,8 @@ class FilesService:
         Deletes a specific file within a collection.
 
         Args:
-            collection_id: The ID of the collection containing the file.
-            file_id: The ID of the file to delete.
+            collection_id (str): The ID of the collection containing the file.
+            file_id (str): The ID of the file to delete.
         """
         self._client._request("DELETE", f"/collections/{collection_id}/files/{file_id}")
         return None # Explicitly return None for 204 responses
