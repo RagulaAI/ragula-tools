@@ -36,8 +36,13 @@ Configuration for the Ragula MCP is now handled exclusively via command-line arg
 {
   "mcpServers": {
     "ragula": {
-      "command": "npx @ragula/mcp",
-      "args": ["--api-key", "your_ragula_api_key_here"]
+      "command": "npx",
+      "args": [
+        "-y",
+        "@ragula/mcp",
+        "--api-key",
+        "your_ragula_api_key_here"
+      ]
     }
   }
 }
@@ -63,7 +68,7 @@ The MCP exposes methods that correspond to Ragula API operations. These methods 
 // (assuming 'mcp' is a client connected to the running MCP server)
 
 // Example: List collections
-const { data: collections, error: listError } = await mcp.callTool('ragula:listCollections');
+const { data: collections, error: listError } = await mcp.callTool('ragula_listCollections');
 if (listError) {
   console.error("Error listing collections:", listError);
 } else {
@@ -71,7 +76,7 @@ if (listError) {
 }
 
 // Example: Create a collection
-const { data: newCollection, error: createError } = await mcp.callTool('ragula:createCollection', { name: 'My New Collection' });
+const { data: newCollection, error: createError } = await mcp.callTool('ragula_createCollection', { name: 'My New Collection' });
  if (createError) {
   console.error("Error creating collection:", createError);
 } else {
@@ -89,32 +94,32 @@ The following commands (mapping to MCP methods) are available:
 
 ### Collection Management
 
-*   **`ragula:listCollections`**
+*   **`ragula_listCollections`**
     *   Description: Lists all available collections.
     *   Parameters: None
     *   Method: `mcp.listCollections()`
-*   **`ragula:createCollection`**
+*   **`ragula_createCollection`**
     *   Description: Creates a new collection.
     *   Parameters:
         *   `name` (string): The name of the new collection.
     *   Method: `mcp.createCollection({ name })`
-*   **`ragula:getCollectionDetails`**
+*   **`ragula_getCollectionDetails`**
     *   Description: Gets details for a specific collection.
     *   Parameters:
         *   `collectionId` (string): The ID of the collection.
     *   Method: `mcp.getCollectionDetails({ collectionId })`
-*   **`ragula:getCollectionStatus`**
+*   **`ragula_getCollectionStatus`**
     *   Description: Gets the status of a specific collection.
     *   Parameters:
         *   `collectionId` (string): The ID of the collection.
     *   Method: `mcp.getCollectionStatus({ collectionId })`
-*   **`ragula:updateCollection`**
+*   **`ragula_updateCollection`**
     *   Description: Updates the name of a collection.
     *   Parameters:
         *   `collectionId` (string): The ID of the collection to update.
         *   `name` (string): The new name for the collection.
     *   Method: `mcp.updateCollection({ collectionId, name })`
-*   **`ragula:deleteCollection`**
+*   **`ragula_deleteCollection`**
     *   Description: Deletes a specific collection.
     *   Parameters:
         *   `collectionId` (string): The ID of the collection to delete.
@@ -122,25 +127,25 @@ The following commands (mapping to MCP methods) are available:
 
 ### Folder Management
 
-*   **`ragula:listFolders`**
+*   **`ragula_listFolders`**
     *   Description: Lists folders within a collection.
     *   Parameters:
         *   `collectionId` (string): The ID of the collection.
     *   Method: `mcp.listFolders({ collectionId })`
-*   **`ragula:createFolder`**
+*   **`ragula_createFolder`**
     *   Description: Creates a folder within a collection.
     *   Parameters:
         *   `collectionId` (string): The ID of the collection.
         *   `name` (string): The name of the new folder.
         *   `parentId` (string): The ID of the parent folder.
     *   Method: `mcp.createFolder({ collectionId, name, parentId })`
-*   **`ragula:deleteFolder`**
+*   **`ragula_deleteFolder`**
     *   Description: Deletes a folder within a collection.
     *   Parameters:
         *   `collectionId` (string): The ID of the collection.
         *   `folderId` (string): The ID of the folder to delete.
     *   Method: `mcp.deleteFolder({ collectionId, folderId })`
-*   **`ragula:listFolderFiles`**
+*   **`ragula_listFolderFiles`**
     *   Description: Lists files within a specific folder of a collection.
     *   Parameters:
         *   `collectionId` (string): The ID of the collection.
@@ -149,25 +154,25 @@ The following commands (mapping to MCP methods) are available:
 
 ### File Management
 
-*   **`ragula:listCollectionFiles`**
+*   **`ragula_listCollectionFiles`**
     *   Description: Lists all files within a collection (including subfolders).
     *   Parameters:
         *   `collectionId` (string): The ID of the collection.
     *   Method: `mcp.listCollectionFiles({ collectionId })`
-*   **`ragula:uploadFile`**
+*   **`ragula_uploadFile`**
     *   Description: Uploads a local file to a collection, optionally to a specific folder.
     *   Parameters:
         *   `collectionId` (string): The ID of the collection.
         *   `filePath` (string): The path to the local file to upload.
         *   `folderId` (string, optional): The ID of the folder to upload into.
     *   Method: `mcp.uploadFile({ collectionId, filePath, folderId })`
-*   **`ragula:deleteFile`**
+*   **`ragula_deleteFile`**
     *   Description: Deletes a file from the root of a collection.
     *   Parameters:
         *   `collectionId` (string): The ID of the collection.
         *   `fileId` (string): The ID of the file to delete.
     *   Method: `mcp.deleteFile({ collectionId, fileId })`
-*   **`ragula:deleteFolderFile`**
+*   **`ragula_deleteFolderFile`**
     *   Description: Deletes a file from a specific folder within a collection.
     *   Parameters:
         *   `collectionId` (string): The ID of the collection.
@@ -177,13 +182,13 @@ The following commands (mapping to MCP methods) are available:
 
 ### Querying
 
-*   **`ragula:query`**
+*   **`ragula_query`**
     *   Description: Performs a semantic query against a collection.
     *   Parameters:
         *   `collectionId` (string): The ID of the collection to query.
         *   `queryText` (string): The text of the query.
     *   Method: `mcp.query({ collectionId, queryText })`
-*   **`ragula:question`**
+*   **`ragula_question`**
     *   Description: Asks a question against a collection (RAG).
     *   Parameters:
         *   `collectionId` (string): The ID of the collection.

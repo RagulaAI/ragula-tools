@@ -21,11 +21,11 @@ const collectionHandler = (collectionId: string, apiKey: string) => {
       );
     },
 
-    question: async (question: string) => {
+    question: async (question: string, context: string = "") => {
       return await tryCatch(
         doFetch<QueryResponse>(`collections/${collectionId}/question`, apiKey, {
           method: "POST",
-          body: JSON.stringify({ question }),
+          body: JSON.stringify({ question, context }),
         })
       );
     },

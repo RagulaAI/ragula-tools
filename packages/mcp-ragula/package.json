@@ -1,7 +1,7 @@
 {
   "name": "@ragula/mcp",
-  "version": "0.0.1",
-  "description": "MCP server implementation for Ragula.io",
+  "version": "0.0.5",
+  "description": "MCP server implementation for ragula.io",
   "repository": {
     "type": "git",
     "url": "https://github.com/RagulaAI/ragula-tools.git",
@@ -13,7 +13,7 @@
     "dist"
   ],
   "bin": {
-    "ragula-mcp": "dist/index.js"
+    "@ragula/mcp": "dist/index.js"
   },
   "scripts": {
     "start": "node dist/index.js",

@@ -13,7 +13,6 @@ import {
   McpServer,
   ResourceTemplate,
 } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { TextContent } from "@modelcontextprotocol/sdk/types.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { Ragula } from "@ragula/sdk";
 import { z } from "zod";
@@ -155,7 +154,7 @@ const executeRagulaAction = async <T>(
       error: new Error("Invalid data format received from listCollections"),
     };
   }
-  server.tool("ragula:listCollections", {}, async () => {
+  server.tool("listCollections", {}, async () => {
     const { data, error } = await getCachedCollections();
 
     if (error) {
@@ -173,28 +172,28 @@ const executeRagulaAction = async <T>(
   });
 
   server.tool(
-    "ragula:createCollection",
+    "createCollection",
     { name: z.string().describe("The name for the new collection") },
     async ({ name }) =>
       executeRagulaAction(() => ragulaClient.createCollection(name, null)) // Assuming null description for now
   );
 
   server.tool(
-    "ragula:getCollectionDetails",
+    "getCollectionDetails",
     { collectionId: z.string().describe("The ID of the collection") },
     async ({ collectionId }) =>
       executeRagulaAction(() => ragulaClient.collection(collectionId).details())
   );
 
   server.tool(
-    "ragula:getCollectionStatus",
+    "getCollectionStatus",
     { collectionId: z.string().describe("The ID of the collection") },
     async ({ collectionId }) =>
       executeRagulaAction(() => ragulaClient.collection(collectionId).status())
   );
 
   server.tool(
-    "ragula:updateCollection",
+    "updateCollection",
     {
       collectionId: z.string().describe("The ID of the collection to update"),
       name: z.string().describe("The new name for the collection"),
@@ -207,7 +206,7 @@ const executeRagulaAction = async <T>(
   );
 
   server.tool(
-    "ragula:deleteCollection",
+    "deleteCollection",
     { collectionId: z.string().describe("The ID of the collection to delete") },
     async ({ collectionId }) =>
       executeRagulaAction(() => ragulaClient.collection(collectionId).delete())
@@ -215,7 +214,7 @@ const executeRagulaAction = async <T>(
 
   // == Folder Tools ==
   server.tool(
-    "ragula:listFolders",
+    "listFolders",
     { collectionId: z.string().describe("The ID of the collection") },
     async ({ collectionId }) =>
       executeRagulaAction(() =>
@@ -224,7 +223,7 @@ const executeRagulaAction = async <T>(
   );
 
   server.tool(
-    "ragula:createFolder",
+    "createFolder",
     {
       collectionId: z.string().describe("The ID of the collection"),
       name: z.string().describe("The name of the new folder"),
@@ -244,7 +243,7 @@ const executeRagulaAction = async <T>(
   );
 
   server.tool(
-    "ragula:deleteFolder",
+    "deleteFolder",
     {
       collectionId: z.string().describe("The ID of the collection"),
       folderId: z.string().describe("The ID of the folder to delete"),
@@ -256,7 +255,7 @@ const executeRagulaAction = async <T>(
   );
 
   server.tool(
-    "ragula:listFolderFiles",
+    "listFolderFiles",
     {
       collectionId: z.string().describe("The ID of the collection"),
       folderId: z.string().describe("The ID of the folder"),
@@ -269,7 +268,7 @@ const executeRagulaAction = async <T>(
 
   // == File Tools ==
   server.tool(
-    "ragula:listCollectionFiles",
+    "listCollectionFiles",
     { collectionId: z.string().describe("The ID of the collection") },
     async ({ collectionId }) =>
       executeRagulaAction(() =>
@@ -278,7 +277,7 @@ const executeRagulaAction = async <T>(
   );
 
   server.tool(
-    "ragula:uploadFile",
+    "uploadFile",
     {
       collectionId: z.string().describe("The ID of the collection"),
       filePath: z.string().describe("The local path to the file to upload"),
@@ -330,7 +329,7 @@ const executeRagulaAction = async <T>(
   );
 
   server.tool(
-    "ragula:deleteFile",
+    "deleteFile",
     {
       collectionId: z.string().describe("The ID of the collection"),
       fileId: z
@@ -346,7 +345,7 @@ const executeRagulaAction = async <T>(
 
   // == Querying Tools ==
   server.tool(
-    "ragula:query",
+    "query",
     {
       collectionId: z.string().describe("The ID of the collection to query"),
       queryText: z.string().describe("The semantic query text"),
@@ -358,7 +357,7 @@ const executeRagulaAction = async <T>(
   );
 
   server.tool(
-    "ragula:question",
+    "question",
     {
       collectionId: z.string().describe("The ID of the collection to ask"),
       questionText: z.string().describe("The question text (RAG)"),
@@ -372,7 +371,7 @@ const executeRagulaAction = async <T>(
   // --- Define MCP Resources ---
 
   server.resource(
-    "ragula:collection",
+    "collection",
     new ResourceTemplate("ragula://collection/{collectionId}", {
       list: async () => {
         const { data: collections, error } = await getCachedCollections();
