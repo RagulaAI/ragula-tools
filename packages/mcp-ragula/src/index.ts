@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 process.on("uncaughtException", (error) => {
   console.error("!!! MCP Uncaught Exception:", error);
   process.exit(1);

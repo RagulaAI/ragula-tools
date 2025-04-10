@@ -15,6 +15,12 @@ npm install @ragula/mcp @ragula/sdk
 yarn add @ragula/mcp @ragula/sdk
 ```
 
+Once installed, you can run it directly using npx:
+
+```bash
+npx ragula-mcp --api-key YOUR_KEY
+```
+
 ### Configuration via Command-Line Arguments
 
 Configuration for the Ragula MCP is now handled exclusively via command-line arguments when the MCP server process is launched. This is typically configured within the main application's MCP server definition (e.g., in Cline's configuration).
@@ -23,29 +29,23 @@ Configuration for the Ragula MCP is now handled exclusively via command-line arg
 
 *   `--api-key` or `-k` (string): Your Ragula API key. The MCP will fail to start if this is not provided.
 
-**Optional Argument:**
-
-*   `--preset-collections` or `-p` (string): A JSON string representing an array of preset collections. Each object in the array should have an `id` (string) and `description` (string). If provided, this allows the `ragula:listPresetCollections` tool to return these predefined collections.
 
 **Example Configuration (Conceptual - within a parent MCP runner like Cline):**
 
 ```json
-// Example within a hypothetical parent application's config
 {
-  "mcpServers": [
-    {
-      "name": "ragula",
-      "package": "@ragula/mcp", // Or path to the package
-      "args": [
-        "--api-key", "your_ragula_api_key_here"
-      ]
+  "mcpServers": {
+    "ragula": {
+      "command": "npx @ragula/mcp",
+      "args": ["--api-key", "your_ragula_api_key_here"]
     }
-    // ... other MCP servers
-  ]
+  }
 }
+
 ```
 
-**Note:** Ensure the JSON string for `--preset-collections` is properly escaped if necessary, depending on how it's passed by the parent process or shell. If the JSON is invalid, a warning will be logged, and the MCP will operate without presets.
+Get your API key here: https://www.ragula.io/profile
+
 
 ## Usage
 
@@ -56,8 +56,8 @@ The MCP exposes methods that correspond to Ragula API operations. These methods 
 // which passes the command-line arguments during startup.
 // Direct instantiation like below is less common now.
 
-// If you were to run it directly (e.g., for testing):
-// node ./dist/index.js --api-key YOUR_KEY --preset-collections '[...]'
+// If you were to run it directly (e.g., for testing): node ./dist/index.js --api-key YOUR_KEY
+// or using npx: npx ragula-mcp --api-key YOUR_KEY
 
 // Example of interacting with an already running MCP instance
 // (assuming 'mcp' is a client connected to the running MCP server)
@@ -119,10 +119,6 @@ The following commands (mapping to MCP methods) are available:
     *   Parameters:
         *   `collectionId` (string): The ID of the collection to delete.
     *   Method: `mcp.deleteCollection({ collectionId })`
-*   **`ragula:listPresetCollections`**
-    *   Description: Lists the preset collections provided via the `--preset-collections` command-line argument during startup.
-    *   Parameters: None
-    *   Method: `mcp.listPresetCollections()`
 
 ### Folder Management
 

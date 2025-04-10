@@ -2,6 +2,11 @@
   "name": "@ragula/mcp",
   "version": "0.0.1",
   "description": "MCP server implementation for Ragula.io",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/RagulaAI/ragula-tools.git",
+    "directory": "packages/mcp-ragula"
+  },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
@@ -22,6 +27,9 @@
   ],
   "author": "",
   "license": "ISC",
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
     "@ragula/sdk": "latest",
     "@modelcontextprotocol/sdk": "^1.9.0",
