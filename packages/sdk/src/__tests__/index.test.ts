@@ -1,4 +1,4 @@
-import Ragula from "../index";
+import { Ragula } from "../index";
 import { doFetch } from "../utils/api";
 import { tryCatch } from "../utils/tryCatch";
 import collectionHandler from "../handlers/collectionHandler";
@@ -54,7 +54,7 @@ describe("Ragula SDK Client", () => {
 
       expect(mockDoFetch).toHaveBeenCalledTimes(1);
       expect(mockDoFetch).toHaveBeenCalledWith("collections", apiKey);
-      expect(result).toEqual(mockResponse);
+      expect(result).toEqual({ data: mockResponse, error: null });
       expect(tryCatch).toHaveBeenCalledTimes(1);
     });
 
@@ -62,8 +62,8 @@ describe("Ragula SDK Client", () => {
       const mockError = new Error("API Error");
       mockDoFetch.mockRejectedValueOnce(mockError);
 
-      await expect(ragula.listCollections()).rejects.toThrow(mockError);
-
+      const result = await ragula.listCollections();
+      expect(result).toEqual({ data: null, error: mockError });
       expect(mockDoFetch).toHaveBeenCalledTimes(1);
       expect(mockDoFetch).toHaveBeenCalledWith("collections", apiKey);
       expect(tryCatch).toHaveBeenCalledTimes(1);
@@ -95,7 +95,7 @@ describe("Ragula SDK Client", () => {
         method: "POST",
         body: JSON.stringify(payload),
       });
-      expect(result).toEqual(mockResponse);
+      expect(result).toEqual({ data: mockResponse, error: null });
       expect(tryCatch).toHaveBeenCalledTimes(1);
     });
 
@@ -123,7 +123,7 @@ describe("Ragula SDK Client", () => {
         method: "POST",
         body: JSON.stringify(nullDescPayload),
       });
-      expect(result).toEqual(mockResponse);
+      expect(result).toEqual({ data: mockResponse, error: null });
       expect(tryCatch).toHaveBeenCalledTimes(1);
     });
 
@@ -131,9 +131,8 @@ describe("Ragula SDK Client", () => {
       const mockError = new Error("API Creation Error");
       mockDoFetch.mockRejectedValueOnce(mockError);
 
-      await expect(ragula.createCollection(name, description)).rejects.toThrow(
-        mockError
-      );
+      const result = await ragula.createCollection(name, description);
+      expect(result).toEqual({ data: null, error: mockError });
 
       expect(mockDoFetch).toHaveBeenCalledTimes(1);
       expect(mockDoFetch).toHaveBeenCalledWith("collections", apiKey, {

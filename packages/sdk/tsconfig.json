@@ -2,7 +2,10 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "outDir": "./dist",
-    "rootDir": "./src"
+    "rootDir": "./src",
+    "module": "NodeNext", // Ensure ES Module output
+    "moduleResolution": "NodeNext", // Align module resolution
+    "declarationMap": true // Add source maps for declarations
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist"]

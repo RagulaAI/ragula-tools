@@ -1,6 +1,9 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
+    "module": "NodeNext", // Override to output ES Modules
+    "moduleResolution": "NodeNext", // Use Node.js ESM resolution
+    "esModuleInterop": true, // Add for better CJS/ESM default import interop
     "outDir": "./dist",
     "rootDir": "./src"
   },

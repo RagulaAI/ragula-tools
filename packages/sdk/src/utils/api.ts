@@ -6,7 +6,7 @@ export const doFetch = async <T>(
   apiKey: string,
   options: RequestInit = {}
 ): Promise<T> => {
-  const baseUrl = `https://www.ragula.com/api`;
+  const baseUrl = `https://www.ragula.io/api`;
   const headers = new Headers(options.headers);
   headers.set("Authorization", `Bearer ${apiKey}`);
 

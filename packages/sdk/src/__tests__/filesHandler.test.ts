@@ -30,7 +30,9 @@ describe("Files Handler", () => {
     it("should call doFetch with correct parameters", async () => {
       mockDoFetch.mockResolvedValueOnce(undefined);
 
-      await handler.delete();
+      const result = await handler.delete();
+      // Assuming successful delete resolves with undefined data via tryCatch
+      expect(result).toEqual({ data: undefined, error: null });
 
       expect(mockDoFetch).toHaveBeenCalledWith(
         `collections/${collectionId}/files/${fileId}`,
@@ -43,7 +45,8 @@ describe("Files Handler", () => {
       const mockError = new Error("Delete Error");
       mockDoFetch.mockRejectedValueOnce(mockError);
 
-      await expect(handler.delete()).rejects.toThrow(mockError);
+      const result = await handler.delete();
+      expect(result).toEqual({ data: null, error: mockError });
     });
   });
 });

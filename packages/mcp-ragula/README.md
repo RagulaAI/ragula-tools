@@ -37,8 +37,7 @@ Configuration for the Ragula MCP is now handled exclusively via command-line arg
       "name": "ragula",
       "package": "@ragula/mcp", // Or path to the package
       "args": [
-        "--api-key", "your_ragula_api_key_here",
-        "--preset-collections", "[{\"id\":\"coll_abc\",\"description\":\"Project Docs\"},{\"id\":\"coll_xyz\",\"description\":\"Support KB\"}]"
+        "--api-key", "your_ragula_api_key_here"
       ]
     }
     // ... other MCP servers

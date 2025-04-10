@@ -4,7 +4,6 @@ import { tryCatch } from "../utils/tryCatch";
 import * as ApiTypes from "../types";
 import foldersHandler from "../handlers/foldersHandler";
 
-// Mock the dependencies
 jest.mock("../utils/api");
 jest.mock("../utils/tryCatch", () => ({
   tryCatch: jest.fn((fn) =>
@@ -46,7 +45,7 @@ describe("Collection Handler", () => {
           body: JSON.stringify({ query: queryText }),
         }
       );
-      expect(result).toEqual(mockResponse);
+      expect(result).toEqual({ data: mockResponse, error: null });
     });
 
     it("should throw an error if doFetch fails", async () => {
@@ -54,7 +53,47 @@ describe("Collection Handler", () => {
       const mockError = new Error("Query Error");
       mockDoFetch.mockRejectedValueOnce(mockError);
 
-      await expect(handler.query(queryText)).rejects.toThrow(mockError);
+      const result = await handler.query(queryText);
+      expect(result).toEqual({ data: null, error: mockError });
+    });
+  });
+
+  describe("question", () => {
+    it("should call doFetch with correct parameters", async () => {
+      const questionText = "test question";
+      const mockResponse: ApiTypes.QueryResponse = {
+        results: [{ fileId: "doc1", contentSnippet: "answer", score: 0.9 }],
+      };
+      mockDoFetch.mockResolvedValueOnce(mockResponse);
+
+      const result = await handler.question(questionText);
+
+      expect(mockDoFetch).toHaveBeenCalledWith(
+        `collections/${collectionId}/question`,
+        apiKey,
+        {
+          method: "POST",
+          body: JSON.stringify({ question: questionText }),
+        }
+      );
+      expect(result).toEqual({ data: mockResponse, error: null });
+    });
+
+    it("should return an error if doFetch fails", async () => {
+      const questionText = "test question";
+      const mockError = new Error("Question Error");
+      mockDoFetch.mockRejectedValueOnce(mockError);
+
+      const result = await handler.question(questionText);
+      expect(result).toEqual({ data: null, error: mockError });
+      expect(mockDoFetch).toHaveBeenCalledWith(
+        `collections/${collectionId}/question`,
+        apiKey,
+        {
+          method: "POST",
+          body: JSON.stringify({ question: questionText }),
+        }
+      );
     });
   });
 
@@ -78,7 +117,7 @@ describe("Collection Handler", () => {
         `collections/${collectionId}`,
         apiKey
       );
-      expect(result).toEqual(mockResponse);
+      expect(result).toEqual({ data: mockResponse, error: null });
     });
   });
 
@@ -97,7 +136,7 @@ describe("Collection Handler", () => {
         `collections/${collectionId}/status`,
         apiKey
       );
-      expect(result).toEqual(mockResponse);
+      expect(result).toEqual({ data: mockResponse, error: null });
     });
   });
 
@@ -129,7 +168,7 @@ describe("Collection Handler", () => {
           body: JSON.stringify(payload),
         }
       );
-      expect(result).toEqual(mockResponse);
+      expect(result).toEqual({ data: mockResponse, error: null });
     });
   });
 
@@ -137,7 +176,8 @@ describe("Collection Handler", () => {
     it("should call doFetch with correct parameters", async () => {
       mockDoFetch.mockResolvedValueOnce(undefined);
 
-      await handler.delete();
+      const result = await handler.delete();
+      expect(result).toEqual({ data: undefined, error: null });
 
       expect(mockDoFetch).toHaveBeenCalledWith(
         `collections/${collectionId}`,
@@ -170,7 +210,7 @@ describe("Collection Handler", () => {
         `collections/${collectionId}/folders`,
         apiKey
       );
-      expect(result).toEqual(mockResponse);
+      expect(result).toEqual({ data: mockResponse, error: null });
     });
   });
 
@@ -201,7 +241,7 @@ describe("Collection Handler", () => {
           body: JSON.stringify(payload),
         }
       );
-      expect(result).toEqual(mockResponse);
+      expect(result).toEqual({ data: mockResponse, error: null });
     });
   });
 
@@ -233,7 +273,7 @@ describe("Collection Handler", () => {
         `collections/${collectionId}/files`,
         apiKey
       );
-      expect(result).toEqual(mockResponse);
+      expect(result).toEqual({ data: mockResponse, error: null });
     });
   });
 
@@ -255,7 +295,7 @@ describe("Collection Handler", () => {
           body: expect.any(FormData),
         }
       );
-      expect(result).toEqual(mockResponse);
+      expect(result).toEqual({ data: mockResponse, error: null });
     });
   });
 });

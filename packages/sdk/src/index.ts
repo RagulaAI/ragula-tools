@@ -30,4 +30,4 @@ class Ragula {
     collectionHandler(collectionId, this.apiKey);
 }
 
-export default Ragula;
+export { Ragula };

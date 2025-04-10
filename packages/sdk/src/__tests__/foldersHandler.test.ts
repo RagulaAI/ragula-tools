@@ -34,7 +34,9 @@ describe("Folders Handler", () => {
     it("should call doFetch with correct parameters", async () => {
       mockDoFetch.mockResolvedValueOnce(undefined);
 
-      await handler.delete();
+      const result = await handler.delete();
+      // Assuming successful delete resolves with undefined data via tryCatch
+      expect(result).toEqual({ data: undefined, error: null });
 
       expect(mockDoFetch).toHaveBeenCalledWith(
         `collections/${collectionId}/folders/${folderId}`,
@@ -47,7 +49,8 @@ describe("Folders Handler", () => {
       const mockError = new Error("Delete Error");
       mockDoFetch.mockRejectedValueOnce(mockError);
 
-      await expect(handler.delete()).rejects.toThrow(mockError);
+      const result = await handler.delete();
+      expect(result).toEqual({ data: null, error: mockError });
     });
   });
 
@@ -63,14 +66,15 @@ describe("Folders Handler", () => {
         apiKey,
         { method: "GET" }
       );
-      expect(result).toEqual(mockResponse);
+      expect(result).toEqual({ data: mockResponse, error: null });
     });
 
     it("should throw an error if doFetch fails", async () => {
       const mockError = new Error("List Files Error");
       mockDoFetch.mockRejectedValueOnce(mockError);
 
-      await expect(handler.listFiles()).rejects.toThrow(mockError);
+      const result = await handler.listFiles();
+      expect(result).toEqual({ data: null, error: mockError });
     });
   });
 

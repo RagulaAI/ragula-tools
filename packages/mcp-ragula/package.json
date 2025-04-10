@@ -1,12 +1,15 @@
 {
   "name": "@ragula/mcp",
-  "version": "0.1.0",
-  "description": "MCP server implementation for Ragula",
+  "version": "0.0.1",
+  "description": "MCP server implementation for Ragula.io",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
     "dist"
   ],
+  "bin": {
+    "ragula-mcp": "dist/index.js"
+  },
   "scripts": {
     "start": "node dist/index.js",
     "build": "tsc",
@@ -20,7 +23,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@ragula/sdk": "../sdk",
+    "@ragula/sdk": "latest",
     "@modelcontextprotocol/sdk": "^1.9.0",
     "yargs": "^17.7.2",
     "zod": "^3.22.4"
