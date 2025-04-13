@@ -48,6 +48,25 @@ export interface File {
   createdAt: Date;
   updatedAt: Date;
   storagePath: string;
+  isLink?: boolean;
+  url?: string;
+}
+
+export interface Link {
+  id: string;
+  name: string;
+  url: string;
+  collectionId: string;
+  folderId: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+  isLink: true;
+}
+
+export interface LinkCreateRequest {
+  name: string;
+  url: string;
+  folderId?: string | null;
 }
 
 export interface UploadFilePayload {
@@ -76,6 +95,10 @@ export interface QueryResponse {
   results: QueryResultItem[];
 }
 
+export interface AskQuestionResponse {
+  answer: string;
+}
+
 export interface ErrorResponse {
   message: string;
 }
@@ -87,9 +110,14 @@ export type UpdateCollectionResponse = Collection;
 export type GetCollectionStatusResponse = CollectionStatus;
 export type ListFoldersResponse = Folder[];
 export type CreateFolderResponse = Folder;
-export type ListFilesResponse = File[];
+export interface FileListingResponse {
+  items: Array<File | Folder | Link>;
+}
+
+export type ListFilesResponse = FileListingResponse;
 export type UploadFileResponse = File;
 export type QueryCollectionResponse = QueryResponse;
+export type CreateLinkResponse = Link;
 
 export interface GetCollectionParams {
   collectionId: string;

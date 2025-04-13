@@ -2,6 +2,7 @@ import foldersHandler from "../handlers/foldersHandler";
 import { doFetch } from "../utils/api";
 import { tryCatch } from "../utils/tryCatch";
 import filesHandler from "../handlers/filesHandler";
+import * as ApiTypes from "../types";
 
 // Mock the dependencies
 jest.mock("../utils/api");
@@ -56,7 +57,21 @@ describe("Folders Handler", () => {
 
   describe("listFiles", () => {
     it("should call doFetch with correct parameters", async () => {
-      const mockResponse = [{ id: "file1", name: "test.txt" }];
+      const mockResponse: ApiTypes.FileListingResponse = {
+        items: [
+          {
+            id: "file1",
+            name: "test.txt",
+            type: "text/plain",
+            size: 1024,
+            collectionId,
+            folderId,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+            storagePath: "path/to/file",
+          },
+        ],
+      };
       mockDoFetch.mockResolvedValueOnce(mockResponse);
 
       const result = await handler.listFiles();

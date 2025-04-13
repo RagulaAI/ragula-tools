@@ -1,3 +1,4 @@
+import { FileListingResponse } from "../types";
 import { doFetch } from "../utils/api";
 import { tryCatch } from "../utils/tryCatch";
 import filesHandler from "./filesHandler";
@@ -20,7 +21,7 @@ const foldersHandler = (
 
     listFiles: async () => {
       return await tryCatch(
-        doFetch<void>(
+        doFetch<FileListingResponse>(
           `collections/${collectionId}/files?folderId=${folderId}`,
           apiKey,
           { method: "GET" }

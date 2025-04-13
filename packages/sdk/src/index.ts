@@ -1,6 +1,7 @@
 import { doFetch } from "./utils/api";
 import { tryCatch } from "./utils/tryCatch";
 import * as ApiTypes from "./types";
+export * from "./types";
 import collectionHandler from "./handlers/collectionHandler";
 
 class Ragula {

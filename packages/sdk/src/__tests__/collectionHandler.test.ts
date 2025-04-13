@@ -3,6 +3,7 @@ import { doFetch } from "../utils/api";
 import { tryCatch } from "../utils/tryCatch";
 import * as ApiTypes from "../types";
 import foldersHandler from "../handlers/foldersHandler";
+import linksHandler from "../handlers/linksHandler";
 
 jest.mock("../utils/api");
 jest.mock("../utils/tryCatch", () => ({
@@ -13,9 +14,11 @@ jest.mock("../utils/tryCatch", () => ({
   ),
 }));
 jest.mock("../handlers/foldersHandler");
+jest.mock("../handlers/linksHandler");
 
 const mockDoFetch = doFetch as jest.Mock;
 const mockFoldersHandler = foldersHandler as jest.Mock;
+const mockLinksHandler = linksHandler as jest.Mock;
 
 describe("Collection Handler", () => {
   const apiKey = "test-api-key";
@@ -61,8 +64,8 @@ describe("Collection Handler", () => {
   describe("question", () => {
     it("should call doFetch with correct parameters", async () => {
       const questionText = "test question";
-      const mockResponse: ApiTypes.QueryResponse = {
-        results: [{ fileId: "doc1", contentSnippet: "answer", score: 0.9 }],
+      const mockResponse: ApiTypes.AskQuestionResponse = {
+        answer: "This is the answer to your question",
       };
       mockDoFetch.mockResolvedValueOnce(mockResponse);
 
@@ -190,7 +193,7 @@ describe("Collection Handler", () => {
   });
 
   describe("listFolders", () => {
-    it("should call doFetch with correct parameters", async () => {
+    it("should call doFetch with correct parameters without parentId", async () => {
       const mockDate = new Date();
       const mockResponse: ApiTypes.Folder[] = [
         {
@@ -208,6 +211,30 @@ describe("Collection Handler", () => {
 
       expect(mockDoFetch).toHaveBeenCalledWith(
         `collections/${collectionId}/folders`,
+        apiKey
+      );
+      expect(result).toEqual({ data: mockResponse, error: null });
+    });
+
+    it("should call doFetch with correct parameters with parentId", async () => {
+      const parentId = "parent-folder-123";
+      const mockDate = new Date();
+      const mockResponse: ApiTypes.Folder[] = [
+        {
+          id: "folder1",
+          name: "Test Folder",
+          parentId: parentId,
+          collectionId,
+          createdAt: mockDate,
+          updatedAt: mockDate,
+        },
+      ];
+      mockDoFetch.mockResolvedValueOnce(mockResponse);
+
+      const result = await handler.listFolders(parentId);
+
+      expect(mockDoFetch).toHaveBeenCalledWith(
+        `collections/${collectionId}/folders?parentId=${parentId}`,
         apiKey
       );
       expect(result).toEqual({ data: mockResponse, error: null });
@@ -263,8 +290,22 @@ describe("Collection Handler", () => {
   });
 
   describe("listFiles", () => {
-    it("should call doFetch with correct parameters", async () => {
-      const mockResponse = [{ id: "file1", name: "test.txt" }];
+    it("should call doFetch with correct parameters without folderId", async () => {
+      const mockResponse: ApiTypes.FileListingResponse = {
+        items: [
+          {
+            id: "file1",
+            name: "test.txt",
+            type: "text/plain",
+            size: 1024,
+            collectionId,
+            folderId: null,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+            storagePath: "path/to/file",
+          },
+        ],
+      };
       mockDoFetch.mockResolvedValueOnce(mockResponse);
 
       const result = await handler.listFiles();
@@ -275,14 +316,52 @@ describe("Collection Handler", () => {
       );
       expect(result).toEqual({ data: mockResponse, error: null });
     });
+
+    it("should call doFetch with correct parameters with folderId", async () => {
+      const folderId = "folder-123";
+      const mockResponse: ApiTypes.FileListingResponse = {
+        items: [
+          {
+            id: "file1",
+            name: "test.txt",
+            type: "text/plain",
+            size: 1024,
+            collectionId,
+            folderId: folderId,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+            storagePath: "path/to/file",
+          },
+        ],
+      };
+      mockDoFetch.mockResolvedValueOnce(mockResponse);
+
+      const result = await handler.listFiles(folderId);
+
+      expect(mockDoFetch).toHaveBeenCalledWith(
+        `collections/${collectionId}/files?folderId=${folderId}`,
+        apiKey
+      );
+      expect(result).toEqual({ data: mockResponse, error: null });
+    });
   });
 
   describe("uploadFile", () => {
-    it("should call doFetch with correct parameters", async () => {
+    it("should call doFetch with correct parameters without folderId", async () => {
       const mockFile = new File(["test content"], "test.txt", {
         type: "text/plain",
       });
-      const mockResponse = { id: "file1", name: "test.txt" };
+      const mockResponse: ApiTypes.File = {
+        id: "file1",
+        name: "test.txt",
+        type: "text/plain",
+        size: 1024,
+        collectionId,
+        folderId: null,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        storagePath: "path/to/file",
+      };
       mockDoFetch.mockResolvedValueOnce(mockResponse);
 
       const result = await handler.uploadFile(mockFile);
@@ -296,6 +375,161 @@ describe("Collection Handler", () => {
         }
       );
       expect(result).toEqual({ data: mockResponse, error: null });
+    });
+
+    it("should call doFetch with correct parameters with folderId", async () => {
+      const mockFile = new File(["test content"], "test.txt", {
+        type: "text/plain",
+      });
+      const folderId = "folder-123";
+      const mockResponse: ApiTypes.File = {
+        id: "file1",
+        name: "test.txt",
+        type: "text/plain",
+        size: 1024,
+        collectionId,
+        folderId: folderId,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        storagePath: "path/to/file",
+      };
+      mockDoFetch.mockResolvedValueOnce(mockResponse);
+
+      const result = await handler.uploadFile(mockFile, folderId);
+
+      // Check that FormData contains the folderId
+      const formDataMock = mockDoFetch.mock.calls[0][2].body;
+      expect(formDataMock.get("folderId")).toBe(folderId);
+
+      expect(mockDoFetch).toHaveBeenCalledWith(
+        `collections/${collectionId}/files`,
+        apiKey,
+        {
+          method: "POST",
+          body: expect.any(FormData),
+        }
+      );
+      expect(result).toEqual({ data: mockResponse, error: null });
+    });
+  });
+
+  describe("createLink", () => {
+    it("should call doFetch with correct parameters without folderId", async () => {
+      const payload: ApiTypes.LinkCreateRequest = {
+        name: "Test Link",
+        url: "https://example.com",
+      };
+      const mockResponse: ApiTypes.Link = {
+        id: "link1",
+        name: payload.name,
+        url: payload.url,
+        collectionId,
+        folderId: null,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        isLink: true,
+      };
+      mockDoFetch.mockResolvedValueOnce(mockResponse);
+
+      const result = await handler.createLink(payload);
+
+      expect(mockDoFetch).toHaveBeenCalledWith(
+        `collections/${collectionId}/links`,
+        apiKey,
+        {
+          method: "POST",
+          body: JSON.stringify(payload),
+        }
+      );
+      expect(result).toEqual({ data: mockResponse, error: null });
+    });
+
+    it("should call doFetch with correct parameters with folderId", async () => {
+      const folderId = "folder-123";
+      const payload: ApiTypes.LinkCreateRequest = {
+        name: "Test Link",
+        url: "https://example.com",
+        folderId,
+      };
+      const mockResponse: ApiTypes.Link = {
+        id: "link1",
+        name: payload.name,
+        url: payload.url,
+        collectionId,
+        folderId,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        isLink: true,
+      };
+      mockDoFetch.mockResolvedValueOnce(mockResponse);
+
+      const result = await handler.createLink(payload);
+
+      expect(mockDoFetch).toHaveBeenCalledWith(
+        `collections/${collectionId}/links`,
+        apiKey,
+        {
+          method: "POST",
+          body: JSON.stringify(payload),
+        }
+      );
+      expect(result).toEqual({ data: mockResponse, error: null });
+    });
+
+    it("should return an error if doFetch fails", async () => {
+      const payload: ApiTypes.LinkCreateRequest = {
+        name: "Test Link",
+        url: "https://example.com",
+      };
+      const mockError = new Error("Create Link Error");
+      mockDoFetch.mockRejectedValueOnce(mockError);
+
+      const result = await handler.createLink(payload);
+      expect(result).toEqual({ data: null, error: mockError });
+    });
+  });
+
+  describe("deleteLink", () => {
+    it("should call doFetch with correct parameters", async () => {
+      const linkId = "link-123";
+      mockDoFetch.mockResolvedValueOnce(undefined);
+
+      const result = await handler.deleteLink(linkId);
+
+      expect(mockDoFetch).toHaveBeenCalledWith(
+        `collections/${collectionId}/links/${linkId}`,
+        apiKey,
+        {
+          method: "DELETE",
+        }
+      );
+      expect(result).toEqual({ data: undefined, error: null });
+    });
+
+    it("should return an error if doFetch fails", async () => {
+      const linkId = "link-123";
+      const mockError = new Error("Delete Link Error");
+      mockDoFetch.mockRejectedValueOnce(mockError);
+
+      const result = await handler.deleteLink(linkId);
+      expect(result).toEqual({ data: null, error: mockError });
+    });
+  });
+
+  describe("link", () => {
+    it("should call linksHandler with correct parameters", () => {
+      const linkId = "link-123";
+      const mockHandlerInstance = { delete: jest.fn() };
+      mockLinksHandler.mockReturnValueOnce(mockHandlerInstance);
+
+      const result = handler.link(linkId);
+
+      expect(mockLinksHandler).toHaveBeenCalledWith(
+        collectionId,
+        linkId,
+        apiKey
+      );
+      expect(result).toBe(mockHandlerInstance);
     });
   });
 });

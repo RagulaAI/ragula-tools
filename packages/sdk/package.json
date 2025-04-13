@@ -1,6 +1,6 @@
 {
   "name": "@ragula/sdk",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Ragula.io SDK",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
